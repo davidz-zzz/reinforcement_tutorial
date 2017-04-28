@@ -15,7 +15,7 @@ def RLearning(gridworld, agent, par, ):
     cumr = np.zeros(nepisodes)
 
     for i in xrange(nepisodes):
-        s = 12
+        s = gridworld.start_pos[0]
         a = np.argmax(agent.q_value[s, :])
         temp = agent.q_value[s, a]
 
@@ -28,6 +28,8 @@ def RLearning(gridworld, agent, par, ):
 
             option_chance = int(np.ceil(np.random.uniform(0, 1) * len(options))) - 1
 
+            if option_chance==-1:
+                pass
             a = (1 - chance) * a + chance * options[option_chance]
 
             #  note that in this gridworld the action is moving to the new location s'
@@ -202,12 +204,12 @@ class gridworld(object):
 
 
 if __name__ == "__main__":
-    gridworld = gridworld([4, 4])
+    gridworld = gridworld([5, 5])
 
-    gridworld.set_map(barrier_pos=[7], trap_pos=[14, 15], start_pos=[13], target_pos=[16])
+    gridworld.set_map(barrier_pos=[7,9], trap_pos=[18,22,23,24], start_pos=[21], target_pos=[25])
 
     agent = agent(gridworld.transition)
-    par = par(0.3, 1, 0.1)
-    gridworld.print_world(13)
+    par = par(0.3, 0.9, 0.1)
+    gridworld.print_world(21)
     cumr, Q = RLearning(gridworld, agent, par)
     agent.print_optimalpath(gridworld)
